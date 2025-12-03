@@ -43,7 +43,7 @@ FROM eclipse-temurin:21-jre
 WORKDIR /app
 
 # Copy the fat JAR from the build stage
-COPY --from=backend-build /app/target/server-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=backend-build /app/target/lino-0.0.1-SNAPSHOT.jar app.jar
 
 # Spring Boot default port
 EXPOSE 8080
