@@ -1,19 +1,22 @@
 ##### Stage 1 — Build frontend (React) #####
 FROM node:20 AS frontend-build
 
-WORKDIR /app
+WORKDIR /app/frontend
 
-# Copy package.json and package-lock.json (or yarn.lock) for frontend
-COPY frontend/package*.json frontend/
+# Copy package.json and package-lock.json (or yarn.lock) first
+COPY frontend/package*.json ./
 
-# Install frontend dependencies
-RUN cd frontend && npm install
+# Install dependencies
+RUN npm install
 
 # Copy full frontend source code
-COPY frontend frontend/
+COPY frontend/ ./
 
 # Build React app (production)
-RUN cd frontend && npm run build
+RUN npm run build
+
+# Verify build folder exists
+RUN test -d build || (echo "React build failed: 'build' folder not found" && exit 1)
 
 
 ##### Stage 2 — Build backend (Spring Boot) #####
@@ -22,10 +25,9 @@ FROM maven:3.9-eclipse-temurin-21 AS backend-build
 WORKDIR /app
 
 # Copy full project
-COPY . .
+COPY . ./
 
 # Copy built frontend from the frontend-build stage
-# React outputs production files to 'build' folder by default
 COPY --from=frontend-build /app/frontend/build ./frontend-dist
 
 # Copy built frontend into Spring Boot static resources
