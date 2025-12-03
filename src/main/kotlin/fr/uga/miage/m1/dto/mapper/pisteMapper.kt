@@ -10,7 +10,7 @@ object PisteMapper {
     )
 
     fun fromDto(dto: PisteDto): Piste = Piste(
-        id = dto.id,
+        id = dto.id ?: 0L,
         longueur = dto.longueur,
         etat = dto.etat
     )

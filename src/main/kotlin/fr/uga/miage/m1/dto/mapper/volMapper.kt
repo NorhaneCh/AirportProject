@@ -15,7 +15,9 @@ object VolMapper {
         statut = vol.statut,
         avionId = vol.avionAssigne?.immatriculation,
         pisteId = vol.pisteAssignee?.id,
-        historiqueStatuts = vol.historiqueStatuts.toList()
+        historiqueStatuts = vol.historiqueStatuts.toList(),
+        isExternal = vol.isExternal
+
     )
 
     fun fromDto(dto: VolDto): Vol = Vol(
@@ -28,7 +30,8 @@ object VolMapper {
         statut = dto.statut,
         avionAssigne = null,
         pisteAssignee = null,
-        historiqueStatuts = dto.historiqueStatuts.toMutableList()
+        historiqueStatuts = dto.historiqueStatuts.toMutableList(),
+        isExternal = dto.isExternal
     )
 
 }

@@ -4,7 +4,6 @@ import fr.uga.miage.m1.adapter.outbound.db.mapper.toDomain
 import fr.uga.miage.m1.adapter.outbound.db.mapper.toEntity
 import fr.uga.miage.m1.core.port.HangarRepositoryPort
 import org.springframework.stereotype.Component
-import org.springframework.stereotype.Service
 
 @Component
 class HangarRepositoryAdapter(private val repository: JpaHangarRepository) : HangarRepositoryPort {

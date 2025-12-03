@@ -11,7 +11,8 @@ data class Vol(
     var statut: StatutVol = StatutVol.PREVU,
     var avionAssigne: Avion? = null,
     var pisteAssignee: Piste? = null,
-    val historiqueStatuts: MutableList<StatutVol> = mutableListOf(StatutVol.PREVU)
+    val historiqueStatuts: MutableList<StatutVol> = mutableListOf(StatutVol.PREVU),
+    var isExternal: Boolean = false
 ) {
 
     fun changerStatut(nouveauStatut: StatutVol) {

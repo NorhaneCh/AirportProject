@@ -13,6 +13,7 @@ data class VolDto(
     val statut: StatutVol,
     val avionId: String? = null,
     val pisteId: Long? = null,
-    val historiqueStatuts: List<StatutVol> = emptyList()
+    val historiqueStatuts: List<StatutVol> = emptyList(),
+    val isExternal: Boolean = false
 )
 

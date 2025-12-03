@@ -21,13 +21,13 @@ fun AvionEntity.toDomain(): Avion = Avion(
 )
 
 fun Piste.toEntity(): PisteEntity = PisteEntity(
-    id = this.id,
+    id = this.id.takeIf { it != 0L },
     longueur = this.longueur,
     etat = this.etat
 )
 
 fun PisteEntity.toDomain(): Piste = Piste(
-    id = this.id,
+    id = this.id ?: 0L,
     longueur = this.longueur,
     etat = this.etat
 )
@@ -42,7 +42,8 @@ fun Vol.toEntityForCreate() = VolEntity(
     statut = this.statut,
     avion = this.avionAssigne?.toEntity(),
     piste = this.pisteAssignee?.toEntity(),
-    historiqueStatuts = this.historiqueStatuts.toMutableList()
+    historiqueStatuts = this.historiqueStatuts.toMutableList(),
+    isExternal = this.isExternal // <-- ajouté
 )
 
 fun Vol.toEntityForUpdate() = VolEntity(
@@ -55,7 +56,8 @@ fun Vol.toEntityForUpdate() = VolEntity(
     statut = this.statut,
     avion = this.avionAssigne?.toEntity(),
     piste = this.pisteAssignee?.toEntity(),
-    historiqueStatuts = this.historiqueStatuts.toMutableList()
+    historiqueStatuts = this.historiqueStatuts.toMutableList(),
+    isExternal = this.isExternal // <-- ajouté
 )
 
 fun VolEntity.toDomain() = Vol(
@@ -68,5 +70,6 @@ fun VolEntity.toDomain() = Vol(
     statut = this.statut,
     avionAssigne = this.avion?.toDomain(),
     pisteAssignee = this.piste?.toDomain(),
-    historiqueStatuts = this.historiqueStatuts.toMutableList()
+    historiqueStatuts = this.historiqueStatuts.toMutableList(),
+    isExternal = this.isExternal // <-- ajouté
 )

@@ -44,5 +44,9 @@ class VolEntity(
     @CollectionTable(name = "historique_statuts", joinColumns = [JoinColumn(name = "vol_id")])
     @Column(name = "statut")
     @Enumerated(EnumType.STRING)
-    var historiqueStatuts: MutableList<StatutVol> = mutableListOf(StatutVol.PREVU)
+    var historiqueStatuts: MutableList<StatutVol> = mutableListOf(StatutVol.PREVU),
+
+    // ➕ AJOUT POUR SYNCHRO ENTRE AÉROPORTS
+    @Column(name = "is_external", nullable = false)
+    var isExternal: Boolean = false
 )

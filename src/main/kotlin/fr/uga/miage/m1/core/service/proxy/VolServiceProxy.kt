@@ -87,4 +87,10 @@ class VolServiceProxy(
         println("LOG: Historique des statuts du vol $volId")
         return realService.historiqueStatutsVol(volId)
     }
+    fun recupererVolParNumero(numero: String): Vol? {
+        println("LOG: Récupération du vol numéro=$numero")
+        return realService.recupererVolParNumero(numero)
+    }
+    fun importerVolsExternesArrivals(): List<Vol> = realService.importerVolsExternesArrivals()
+    fun importerVolsExternesDepartures(): List<Vol> = realService.importerVolsExternesDepartures()
 }

@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/vols")
+@RequestMapping("/vols")
 class VolController(
     private val volService: VolServiceProxy,
     private val avionService: AvionService
@@ -128,6 +128,46 @@ class VolController(
 
         val dtoList = vols.map { VolDashboardMapper.toDto(it) }
         return ResponseEntity.ok(dtoList)
+    }
+//connection autre aéroport
+    // ---- Connexion avec autre aéroport ----
+
+    @GetMapping("/external/departures")
+    fun getExternalDepartures(): ResponseEntity<List<VolDto>> {
+        val vols = volService.listerTousLesVols()
+            .filter { !it.isExternal && it.origine.lowercase() == "lino" } // uniquement mes vols
+        val dtoList = vols.map { VolMapper.toDto(it) }
+        return ResponseEntity.ok(dtoList)
+    }
+
+    @GetMapping("/external/arrivals")
+    fun getExternalArrivals(): ResponseEntity<List<VolDto>> {
+        val vols = volService.listerTousLesVols()
+            .filter { !it.isExternal && it.destination.lowercase() == "lino" } // uniquement mes vols
+        val dtoList = vols.map { VolMapper.toDto(it) }
+        return ResponseEntity.ok(dtoList)
+    }
+
+    @PostMapping("/external/import")
+    fun importerVolsExternes(@RequestBody volsExternes: List<VolDto>): ResponseEntity<Void> {
+        volsExternes.forEach { dto ->
+            val vol = VolMapper.fromDto(dto).copy(isExternal = true)
+            if (volService.recupererVolParNumero(vol.numero) == null) {
+                volService.creerVol(vol)
+            }
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).build()
+    }
+    @PostMapping("/external/fetch-arrivals")
+    fun fetchExternalArrivals(): ResponseEntity<List<VolDto>> {
+        val vols = volService.importerVolsExternesArrivals()
+        return ResponseEntity.ok(vols.map { VolMapper.toDto(it) })
+    }
+
+    @PostMapping("/external/fetch-departures")
+    fun fetchExternalDepartures(): ResponseEntity<List<VolDto>> {
+        val vols = volService.importerVolsExternesDepartures()
+        return ResponseEntity.ok(vols.map { VolMapper.toDto(it) })
     }
 
 }

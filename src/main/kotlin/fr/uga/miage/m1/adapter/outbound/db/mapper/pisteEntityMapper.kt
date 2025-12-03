@@ -4,7 +4,7 @@ import fr.uga.miage.m1.core.model.Piste
 
 class pisteEntityMapper {
     fun PisteEntity.toDomain() = Piste(
-        id = this.id,
+        id = this.id ?: 0L,
         longueur = this.longueur,
         etat = this.etat
     )
