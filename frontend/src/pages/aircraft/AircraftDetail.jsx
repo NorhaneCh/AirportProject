@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getAircraft } from "../api/aircraft";
+import { getAircraft } from "../../api/aircraft";
 
 export default function AircraftDetails() {
   const { id } = useParams();

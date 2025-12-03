@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createAircraft } from "../api/aircraft";
+import { createAircraft } from "../../api/aircraft";
 
 export default function AircraftCreate() {
   const navigate = useNavigate();
