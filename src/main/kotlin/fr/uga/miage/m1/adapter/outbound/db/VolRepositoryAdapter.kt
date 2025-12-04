@@ -20,12 +20,14 @@ class VolRepositoryAdapter(private val repository: JpaVolRepository) : VolReposi
             val existing = repository.findById(vol.id)
             if (existing.isPresent) {
                 val updated = vol.toEntityForUpdate()
+                updated.id = existing.get().id
                 updated
             } else {
                 vol.toEntityForCreate()
             }
         }
-        return repository.save(entity).toDomain()
+        val savedEntity = repository.save(entity)
+        return savedEntity.toDomain()
     }
 
     override fun findById(id: Long): Vol? =

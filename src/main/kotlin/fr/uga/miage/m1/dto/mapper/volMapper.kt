@@ -4,7 +4,6 @@ import fr.uga.miage.m1.core.model.Vol
 import fr.uga.miage.m1.dto.VolDto
 
 object VolMapper {
-
     fun toDto(vol: Vol): VolDto = VolDto(
         id = vol.id,
         numero = vol.numero,
@@ -13,25 +12,23 @@ object VolMapper {
         dateDepart = vol.dateDepart,
         dateArrivee = vol.dateArrivee,
         statut = vol.statut,
-        avionId = vol.avionAssigne?.immatriculation,
-        pisteId = vol.pisteAssignee?.id,
+        avionImmatriculation = vol.avionImmatriculation,
+        pisteId = vol.pisteId,
         historiqueStatuts = vol.historiqueStatuts.toList(),
         isExternal = vol.isExternal
-
     )
 
     fun fromDto(dto: VolDto): Vol = Vol(
         id = dto.id ?: 0,
-        numero = dto.numero,
+        numero = if (dto.numero.isNotBlank()) dto.numero else "V${System.currentTimeMillis() % 1000000}",
         origine = dto.origine,
         destination = dto.destination,
         dateDepart = dto.dateDepart,
         dateArrivee = dto.dateArrivee,
         statut = dto.statut,
-        avionAssigne = null,
-        pisteAssignee = null,
+        avionImmatriculation = dto.avionImmatriculation,
+        pisteId = dto.pisteId,
         historiqueStatuts = dto.historiqueStatuts.toMutableList(),
         isExternal = dto.isExternal
     )
-
 }

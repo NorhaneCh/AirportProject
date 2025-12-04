@@ -8,18 +8,27 @@ export default function AircraftCreate() {
   const [form, setForm] = useState({
     registration: "",
     type: "",
-    capacity: "",
+    capacity: 0,
     status: "DISPONIBLE",
   });
 
   const updateField = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setForm({
+      ...form,
+      [name]: name === "capacity" ? Number(value) : value,
+    });
   };
 
   const submit = async (e) => {
     e.preventDefault();
-    await createAircraft(form);
-    navigate("/aircraft");
+    try {
+      await createAircraft(form);
+      navigate("/aircraft");
+    } catch (err) {
+      console.error(err);
+      alert("Erreur API lors de la création de l'avion");
+    }
   };
 
   return (

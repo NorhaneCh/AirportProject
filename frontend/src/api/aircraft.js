@@ -19,11 +19,18 @@ export async function createAircraft(data) {
     body: JSON.stringify({
       immatriculation: data.registration,
       type: data.type,
-      capacite: Number(data.capacity),
+      capacite: data.capacity,
       etat: data.status,
     }),
   });
-  return res.json();
+
+  const text = await res.text();
+  if (!res.ok) {
+    console.error("Backend error:", text);
+    throw new Error("Erreur API lors de la création de l'avion");
+  }
+
+  return JSON.parse(text);
 }
 
 export async function updateAircraft(registration, data) {
@@ -33,10 +40,16 @@ export async function updateAircraft(registration, data) {
     body: JSON.stringify({
       immatriculation: registration,
       type: data.type,
-      capacite: Number(data.capacity),
-      etat: data.status,
+      capacite: Number(data.capacite),
+      etat: data.etat,
     }),
   });
+
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(`Failed to update aircraft ${registration}: ${errText}`);
+  }
+
   return res.json();
 }
 

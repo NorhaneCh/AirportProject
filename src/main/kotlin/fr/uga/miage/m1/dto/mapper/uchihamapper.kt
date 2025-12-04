@@ -46,7 +46,7 @@ object UchihaMapper {
             horairePrevuDepart = vol.dateDepart.format(formatter),
             horairePrevuArrivee = vol.dateArrivee.format(formatter),
             statutCourant = vol.statut.name,
-            avionImmatriculation = vol.avionAssigne?.immatriculation ?: "",
+            avionImmatriculation = vol.avionImmatriculation ?: "",
             tprevu = if (vol.historiqueStatuts.contains(StatutVol.PREVU)) vol.dateDepart.format(formatter) else null,
             tenAttente = if (vol.historiqueStatuts.contains(StatutVol.EN_ATTENTE)) vol.dateDepart.format(formatter) else null,
             tembarquement = if (vol.historiqueStatuts.contains(StatutVol.EMBARQUEMENT)) vol.dateDepart.format(formatter) else null,

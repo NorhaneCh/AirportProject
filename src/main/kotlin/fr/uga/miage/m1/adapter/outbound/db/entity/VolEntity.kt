@@ -7,8 +7,7 @@ import java.time.LocalDateTime
 @Entity
 @Table(name = "vols")
 class VolEntity(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
     @Column(nullable = false, unique = true)
@@ -27,26 +26,19 @@ class VolEntity(
     var dateArrivee: LocalDateTime = LocalDateTime.now(),
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     var statut: StatutVol = StatutVol.PREVU,
 
-    // Relation avec AvionEntity
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "avion_immatriculation", referencedColumnName = "immatriculation")
-    var avion: AvionEntity? = null,
+    @Column(name = "avion_immatriculation")
+    var avionImmatriculation: String? = null,
 
-    // Relation avec PisteEntity
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "piste_id", referencedColumnName = "id")
-    var piste: PisteEntity? = null,
+    @Column(name = "piste_id")
+    var pisteId: Long? = null,
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "historique_statuts", joinColumns = [JoinColumn(name = "vol_id")])
-    @Column(name = "statut")
     @Enumerated(EnumType.STRING)
     var historiqueStatuts: MutableList<StatutVol> = mutableListOf(StatutVol.PREVU),
 
-    // ➕ AJOUT POUR SYNCHRO ENTRE AÉROPORTS
     @Column(name = "is_external", nullable = false)
     var isExternal: Boolean = false
 )

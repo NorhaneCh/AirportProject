@@ -13,15 +13,22 @@ export async function getHangar(id) {
 }
 
 export async function createHangar(data) {
+  const payload = {
+    ...data,
+    etat: "VIDE",
+    avions: [],
+  };
   const res = await fetch(API_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      capacite: Number(data.capacite),
-      etat: data.etat,
-      avions: [], // on peut ajouter des avions plus tard
-    }),
+    body: JSON.stringify(payload),
   });
+
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(`Failed to create hangar: ${errText}`);
+  }
+
   return res.json();
 }
 

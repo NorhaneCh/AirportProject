@@ -5,34 +5,20 @@ import fr.uga.miage.m1.core.model.Avion
 import fr.uga.miage.m1.core.model.Piste
 import fr.uga.miage.m1.core.model.StatutVol
 
-// --- Extensions locales pour Avion/Piste ---
-fun Avion.toEntity(): AvionEntity = AvionEntity(
-    immatriculation = this.immatriculation,
-    type = this.type,
-    capacite = this.capacite,
-    etat = this.etat
+fun VolEntity.toDomain() = Vol(
+    id = this.id ?: 0,
+    numero = this.numero,
+    origine = this.origine,
+    destination = this.destination,
+    dateDepart = this.dateDepart,
+    dateArrivee = this.dateArrivee,
+    statut = this.statut,
+    avionImmatriculation = this.avionImmatriculation,
+    pisteId = this.pisteId,
+    historiqueStatuts = this.historiqueStatuts.toMutableList(),
+    isExternal = this.isExternal
 )
 
-fun AvionEntity.toDomain(): Avion = Avion(
-    immatriculation = this.immatriculation,
-    type = this.type,
-    capacite = this.capacite,
-    etat = this.etat
-)
-
-fun Piste.toEntity(): PisteEntity = PisteEntity(
-    id = this.id.takeIf { it != 0L },
-    longueur = this.longueur,
-    etat = this.etat
-)
-
-fun PisteEntity.toDomain(): Piste = Piste(
-    id = this.id ?: 0L,
-    longueur = this.longueur,
-    etat = this.etat
-)
-
-// --- Mapper Vol <-> VolEntity ---
 fun Vol.toEntityForCreate() = VolEntity(
     numero = this.numero,
     origine = this.origine,
@@ -40,10 +26,10 @@ fun Vol.toEntityForCreate() = VolEntity(
     dateDepart = this.dateDepart,
     dateArrivee = this.dateArrivee,
     statut = this.statut,
-    avion = this.avionAssigne?.toEntity(),
-    piste = this.pisteAssignee?.toEntity(),
+    avionImmatriculation = this.avionImmatriculation,
+    pisteId = this.pisteId,
     historiqueStatuts = this.historiqueStatuts.toMutableList(),
-    isExternal = this.isExternal // <-- ajouté
+    isExternal = this.isExternal
 )
 
 fun Vol.toEntityForUpdate() = VolEntity(
@@ -54,22 +40,9 @@ fun Vol.toEntityForUpdate() = VolEntity(
     dateDepart = this.dateDepart,
     dateArrivee = this.dateArrivee,
     statut = this.statut,
-    avion = this.avionAssigne?.toEntity(),
-    piste = this.pisteAssignee?.toEntity(),
+    avionImmatriculation = this.avionImmatriculation,
+    pisteId = this.pisteId,
     historiqueStatuts = this.historiqueStatuts.toMutableList(),
-    isExternal = this.isExternal // <-- ajouté
+    isExternal = this.isExternal
 )
 
-fun VolEntity.toDomain() = Vol(
-    id = this.id ?: 0,
-    numero = this.numero,
-    origine = this.origine,
-    destination = this.destination,
-    dateDepart = this.dateDepart,
-    dateArrivee = this.dateArrivee,
-    statut = this.statut,
-    avionAssigne = this.avion?.toDomain(),
-    pisteAssignee = this.piste?.toDomain(),
-    historiqueStatuts = this.historiqueStatuts.toMutableList(),
-    isExternal = this.isExternal // <-- ajouté
-)

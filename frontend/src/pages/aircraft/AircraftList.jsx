@@ -8,7 +8,7 @@ export default function AircraftList() {
   useEffect(() => {
     getAllAircraft().then((data) => {
       setAircrafts(
-        data.map(a => ({
+        data.map((a) => ({
           registration: a.immatriculation,
           type: a.type,
           capacity: a.capacite,
@@ -20,14 +20,19 @@ export default function AircraftList() {
 
   const handleDelete = async (registration) => {
     await deleteAircraft(registration);
-    setAircrafts(prev => prev.filter(ac => ac.registration !== registration));
+    setAircrafts((prev) =>
+      prev.filter((ac) => ac.registration !== registration)
+    );
   };
 
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Liste des avions</h1>
-        <Link to="/aircraft/new" className="px-4 py-2 bg-blue-600 text-white rounded">
+        <Link
+          to="/aircraft/new"
+          className="px-4 py-2 bg-blue-600 text-white rounded"
+        >
           Ajouter un avion
         </Link>
       </div>
@@ -43,18 +48,22 @@ export default function AircraftList() {
           </tr>
         </thead>
         <tbody>
-          {aircrafts.map(ac => (
+          {aircrafts.map((ac) => (
             <tr key={ac.registration} className="border">
               <td className="p-2 border">{ac.registration}</td>
               <td className="p-2 border">{ac.type}</td>
               <td className="p-2 border">{ac.capacity}</td>
               <td className="p-2 border">{ac.status}</td>
               <td className="p-2 border space-x-3">
-                <Link to={`/aircraft/${ac.registration}`} className="text-blue-600">Détails</Link>
-                <Link to={`/aircraft/${ac.registration}/edit`} className="text-green-600">Modifier</Link>
+                <Link
+                  to={`/aircraft/${ac.registration}/edit`}
+                  className="text-green-600 hover:cursor-pointer hover:underline"
+                >
+                  Modifier
+                </Link>
                 <button
                   onClick={() => handleDelete(ac.registration)}
-                  className="text-red-600"
+                  className="text-red-600 hover:cursor-pointer hover:underline"
                 >
                   Supprimer
                 </button>

@@ -13,8 +13,8 @@ object VolDashboardMapper {
         dateDepart = vol.dateDepart,
         dateArrivee = vol.dateArrivee,
         statut = vol.statut,
-        avionId = vol.avionAssigne?.immatriculation,
-        pisteId = vol.pisteAssignee?.id,
+        avionId = vol.avionImmatriculation,
+        pisteId = vol.pisteId,
         historiqueStatuts = vol.historiqueStatuts.toList()
     )
 }

@@ -41,9 +41,8 @@ export default function HangarList() {
               <td className="p-2 border">{h.etat}</td>
               <td className="p-2 border">{h.avions.length > 0 ? h.avions.map(a => a.immatriculation).join(", ") : "Aucun"}</td>
               <td className="p-2 border space-x-3">
-                <Link to={`/hangars/${h.id}`} className="text-blue-600">Détails</Link>
-                <Link to={`/hangars/${h.id}/edit`} className="text-green-600">Modifier</Link>
-                <button onClick={() => handleDelete(h.id)} className="text-red-600">Supprimer</button>
+                <Link to={`/hangars/${h.id}/edit`} className="text-green-600 hover:cursor-pointer hover:underline">Modifier</Link>
+                <button onClick={() => handleDelete(h.id)} className="text-red-600 hover:cursor-pointer hover:underline">Supprimer</button>
               </td>
             </tr>
           ))}

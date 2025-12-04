@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getPiste, updatePiste } from "../../api/pistes";
+import { getPiste, updatePiste } from "../../api/runways";
 
 export default function RunwayEdit() {
   const { id } = useParams();
@@ -13,7 +13,8 @@ export default function RunwayEdit() {
 
   if (!runway) return <div className="p-4">Chargement...</div>;
 
-  const handleChange = (e) => setRunway({ ...runway, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setRunway({ ...runway, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,16 +24,33 @@ export default function RunwayEdit() {
 
   return (
     <div className="p-6 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Modifier la piste</h1>
+      <h1 className="text-2xl font-bold mb-4">{`Modifier la piste ${id}`}</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input type="text" name="name" value={runway.nom || runway.name} onChange={handleChange} className="w-full border p-2" required />
-        <input type="number" name="length" value={runway.longueur} onChange={handleChange} className="w-full border p-2" required />
-        <select name="status" value={runway.etat} onChange={handleChange} className="w-full border p-2">
+        {/* LONGUEUR */}
+        <input
+          type="number"
+          name="longueur"
+          value={runway.longueur}
+          onChange={handleChange}
+          className="w-full border p-2"
+          required
+        />
+
+        {/* ETAT */}
+        <select
+          name="etat"
+          value={runway.etat}
+          onChange={handleChange}
+          className="w-full border p-2"
+        >
           <option value="LIBRE">Libre</option>
           <option value="OCCUPEE">Occupée</option>
           <option value="EN_MAINTENANCE">Maintenance</option>
         </select>
-        <button className="px-4 py-2 bg-green-600 text-white rounded">Enregistrer</button>
+
+        <button className="px-4 py-2 bg-green-600 text-white rounded hover:cursor-pointer">
+          Enregistrer
+        </button>
       </form>
     </div>
   );

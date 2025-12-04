@@ -21,6 +21,12 @@ export async function createPiste(data) {
       etat: data.status.toUpperCase(),
     }),
   });
+
+  if (!res.ok) {
+    console.error("API ERROR:", await res.text());
+    throw new Error("Erreur API");
+  }
+
   return res.json();
 }
 
@@ -29,11 +35,16 @@ export async function updatePiste(id, data) {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      id,
-      longueur: Number(data.length),
-      etat: data.status.toUpperCase(),
+      id: Number(id),
+      longueur: Number(data.longueur),
+      etat: data.etat,
     }),
   });
+
+  if (!res.ok) {
+    throw new Error("Erreur API lors de la mise à jour de la piste");
+  }
+
   return res.json();
 }
 

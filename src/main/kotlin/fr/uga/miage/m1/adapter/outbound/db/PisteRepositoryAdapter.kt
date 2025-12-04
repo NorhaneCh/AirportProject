@@ -1,11 +1,10 @@
 package fr.uga.miage.m1.adapter.outbound.db
 
-import fr.uga.miage.m1.adapter.outbound.db.entity.toDomain
-import fr.uga.miage.m1.adapter.outbound.db.entity.toEntity
+import fr.uga.miage.m1.adapter.outbound.db.mapper.toDomain
+import fr.uga.miage.m1.adapter.outbound.db.mapper.toEntity
 import fr.uga.miage.m1.core.model.Piste
 import fr.uga.miage.m1.core.port.PisteRepositoryPort
 import org.springframework.stereotype.Component
-import org.springframework.stereotype.Service
 
 @Component
 class PisteRepositoryAdapter(private val repository: JpaPisteRepository) : PisteRepositoryPort {

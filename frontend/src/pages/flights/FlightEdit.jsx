@@ -1,54 +1,85 @@
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { updateFlight, getFlightById } from "../../api/flights";
 
-export default function FlightEdit() {
-  const { id } = useParams();
-  const navigate = useNavigate();
-
+export default function FlightEdit({ flightId, onSuccess }) {
   const [flight, setFlight] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  // Charger le vol au montage
   useEffect(() => {
-    setFlight({
-      id,
-      number: "AF123",
-      origin: "Paris",
-      destination: "New York",
-      schedule: "10:00",
-      status: "Prévu",
-      aircraft: "F-ABCD"
-    });
-  }, [id]);
+    async function fetchFlight() {
+      try {
+        const data = await getFlightById(flightId);
+        setFlight(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchFlight();
+  }, [flightId]);
 
-  if (!flight) return <div className="p-4">Chargement...</div>;
+  if (loading) return <p>Chargement...</p>;
+  if (error) return <p>Erreur: {error}</p>;
+  if (!flight) return <p>Vol introuvable</p>;
 
-  const handleChange = (e) => setFlight({ ...flight, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFlight((prev) => ({ ...prev, [name]: value }));
+  };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Vol modifié (temporaire) :", flight);
-    navigate("/flights");
+    try {
+      const updated = await updateFlight(flightId, flight);
+      onSuccess(updated); // callback pour notifier le parent
+      alert("Vol mis à jour avec succès !");
+    } catch (err) {
+      alert("Erreur lors de la mise à jour : " + err.message);
+    }
   };
 
   return (
-    <div className="p-6 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Modifier un vol</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input type="text" name="number" value={flight.number} onChange={handleChange} className="w-full border p-2" required />
-        <input type="text" name="origin" value={flight.origin} onChange={handleChange} className="w-full border p-2" required />
-        <input type="text" name="destination" value={flight.destination} onChange={handleChange} className="w-full border p-2" required />
-        <input type="time" name="schedule" value={flight.schedule} onChange={handleChange} className="w-full border p-2" required />
-        <select name="status" value={flight.status} onChange={handleChange} className="w-full border p-2">
-          <option>Prévu</option>
-          <option>En attente</option>
-          <option>Embarquement</option>
-          <option>Décollé</option>
-          <option>En vol</option>
-          <option>Arrivé</option>
-          <option>Annulé</option>
-        </select>
-        <input type="text" name="aircraft" value={flight.aircraft} onChange={handleChange} className="w-full border p-2" placeholder="Avion assigné" />
-        <button className="px-4 py-2 bg-green-600 text-white rounded">Enregistrer</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label>Origine:</label>
+        <input
+          type="text"
+          name="origine"
+          value={flight.origine}
+          onChange={handleChange}
+        />
+      </div>
+      <div>
+        <label>Destination:</label>
+        <input
+          type="text"
+          name="destination"
+          value={flight.destination}
+          onChange={handleChange}
+        />
+      </div>
+      <div>
+        <label>Date de départ:</label>
+        <input
+          type="datetime-local"
+          name="dateDepart"
+          value={flight.dateDepart}
+          onChange={handleChange}
+        />
+      </div>
+      <div>
+        <label>Date d'arrivée:</label>
+        <input
+          type="datetime-local"
+          name="dateArrivee"
+          value={flight.dateArrivee}
+          onChange={handleChange}
+        />
+      </div>
+      <button type="submit">Modifier le vol</button>
+    </form>
   );
 }

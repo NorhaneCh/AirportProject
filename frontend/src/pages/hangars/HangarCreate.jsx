@@ -4,38 +4,44 @@ import { createHangar } from "../../api/hangars";
 
 export default function HangarCreate() {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ capacite: 1, etat: "VIDE", avions: [] });
-
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const [capacite, setCapacite] = useState(0);
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await createHangar(form);
-    navigate("/hangars");
+    try {
+      await createHangar({ capacite });
+      navigate("/hangars");
+    } catch (err) {
+      setError("Erreur lors de la création du hangar.");
+    }
   };
 
   return (
     <div className="p-6 max-w-xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Créer un hangar</h1>
+
+      {error && <div className="text-red-600 mb-4">{error}</div>}
+
       <form className="space-y-4" onSubmit={handleSubmit}>
-        <input
-          type="number"
-          name="capacite"
-          value={form.capacite}
-          onChange={handleChange}
-          className="w-full border p-2"
-          required
-        />
-        <select name="etat" value={form.etat} onChange={handleChange} className="w-full border p-2">
-          <option value="VIDE">VIDE</option>
-          <option value="PARTIELLEMENT_PLEIN">PARTIELLEMENT PLEIN</option>
-          <option value="PLEIN">PLEIN</option>
-          <option value="EN_MAINTENANCE">EN MAINTENANCE</option>
-          <option value="INDISPONIBLE">INDISPONIBLE</option>
-        </select>
-        <button className="px-4 py-2 bg-blue-600 text-white rounded">Créer</button>
+        <label className="block">
+          Capacité
+          <input
+            type="number"
+            name="capacite"
+            value={capacite}
+            onChange={(e) => setCapacite(Number(e.target.value))}
+            className="w-full border p-2 mt-1"
+            min={1}
+            required
+          />
+        </label>
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+        >
+          Créer
+        </button>
       </form>
     </div>
   );

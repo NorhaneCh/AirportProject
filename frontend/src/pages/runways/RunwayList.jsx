@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getAllPistes, deletePiste } from "../../api/pistes";
+import { getAllPistes, deletePiste } from "../../api/runways";
 
 export default function RunwayList() {
   const [pistes, setPistes] = useState([]);
@@ -11,14 +11,19 @@ export default function RunwayList() {
 
   const handleDelete = async (id) => {
     await deletePiste(id);
-    setPistes(prev => prev.filter(p => p.id !== id));
+    setPistes((prev) => prev.filter((p) => p.id !== id));
   };
 
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Liste des pistes</h1>
-        <Link to="/runways/new" className="px-4 py-2 bg-blue-600 text-white rounded">Ajouter une piste</Link>
+        <Link
+          to="/runways/new"
+          className="px-4 py-2 bg-blue-600 text-white rounded"
+        >
+          Ajouter une piste
+        </Link>
       </div>
 
       <table className="w-full border">
@@ -31,15 +36,24 @@ export default function RunwayList() {
           </tr>
         </thead>
         <tbody>
-          {pistes.map(p => (
+          {pistes.map((p) => (
             <tr key={p.id} className="border">
               <td className="p-2 border">{p.nom || `Piste ${p.id}`}</td>
               <td className="p-2 border">{p.longueur}</td>
               <td className="p-2 border">{p.etat}</td>
-              <td className="p-2 border space-x-3">
-                <Link to={`/runways/${p.id}`} className="text-blue-600">Détails</Link>
-                <Link to={`/runways/${p.id}/edit`} className="text-green-600">Modifier</Link>
-                <button onClick={() => handleDelete(p.id)} className="text-red-600">Supprimer</button>
+              <td className="p-2 gap-9 flex">
+                <Link
+                  to={`/runways/${p.id}/edit`}
+                  className="text-green-600 hover:cursor-pointer hover:underline"
+                >
+                  Modifier
+                </Link>
+                <button
+                  onClick={() => handleDelete(p.id)}
+                  className="text-red-600 hover:cursor-pointer hover:underline"
+                >
+                  Supprimer
+                </button>
               </td>
             </tr>
           ))}

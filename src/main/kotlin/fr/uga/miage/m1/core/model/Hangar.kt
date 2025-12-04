@@ -1,7 +1,7 @@
 package fr.uga.miage.m1.core.model
 
 data class Hangar(
-    val id: Long = 0,
+    val id: Long? = null,
     val capacite: Int,
     var etat: EtatHangar = EtatHangar.VIDE,
     val avions: MutableList<Avion> = mutableListOf()

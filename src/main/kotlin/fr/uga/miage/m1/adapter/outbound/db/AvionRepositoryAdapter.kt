@@ -1,7 +1,6 @@
 package fr.uga.miage.m1.adapter.outbound.db
-
-import fr.uga.miage.m1.adapter.outbound.db.entity.toDomain
-import fr.uga.miage.m1.adapter.outbound.db.entity.toEntity
+import fr.uga.miage.m1.adapter.outbound.db.mapper.toDomain
+import fr.uga.miage.m1.adapter.outbound.db.mapper.toEntity
 import fr.uga.miage.m1.core.model.Avion
 import fr.uga.miage.m1.core.port.AvionRepositoryPort
 import org.springframework.stereotype.Component
