@@ -47,7 +47,7 @@ export async function createFlight(data) {
 }
 
 // Mettre à jour un vol existant
-export async function updateflight(id, data) {
+export async function updateFlight(id, data) {
   const res = await fetch(`${API_URL}/${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
